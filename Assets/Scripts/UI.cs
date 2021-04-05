@@ -28,4 +28,10 @@ public class UI : MonoBehaviour
         purseValue.SetText("$" + totalPurse);
     }
 
+    public void DecreasePurse(int amount)
+    {
+        totalPurse -= amount;
+        purseValue.SetText("$" + totalPurse);
+    }
+
 }

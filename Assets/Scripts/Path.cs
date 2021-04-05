@@ -11,8 +11,7 @@ public class Path : MonoBehaviour
     {
         Initialize();
     }
-
-    // Update is called once per frame
+    
     private void Initialize()
     {
         path = gameObject.GetComponentsInChildren<Waypoint>();
