@@ -2,12 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
 
-    public Path route;
+    // public Path route;
     private Waypoint[] myRoute;
     private int index = 0;
     private Vector3 nextWaypoint;
@@ -22,18 +23,13 @@ public class Enemy : MonoBehaviour
     [Range (0f, 5f)] public float speed;
     
     private Spawner m_Spawner;
-
+    
     private UI m_UI;
+
+    public UnityEvent DeathEvent;
 
     [Header("Unity Stuff, Don't Mess with")]
     public Image healthBar;
-
-    void Start()
-    {
-        speed = startingSpeed;
-        health = startingHealth;
-        value = startingValue;
-    }
     
     void Awake()
     {
@@ -43,7 +39,13 @@ public class Enemy : MonoBehaviour
         m_UI = GetComponentInParent<UI>();
         Recalculate();
     }
-
+    void Start()
+    {
+        speed = startingSpeed;
+        health = startingHealth;
+        value = startingValue;
+    }
+    
     // Update is called once per frame
     void Update()
     {
@@ -62,8 +64,7 @@ public class Enemy : MonoBehaviour
     {
         if (index + 1 >= myRoute.Length)
         {
-            m_Spawner.ChildDied();
-            Destroy(gameObject);
+            Die(health);
             return;
         }
         else
@@ -97,15 +98,17 @@ public class Enemy : MonoBehaviour
         
         if (health <= 0)
         {
-            Die();
+            Die(0f);
         }
     }
 
-    public void Die()
+    public void Die(float healthRemaining)
     {
-        m_UI.IncreasePurse(value);
-        m_Spawner.ChildDied();
+        DeathEvent.Invoke();
+        DeathEvent.RemoveAllListeners();
+        m_UI.IncreasePurse( (health > 0) ? 0 : value );
+        m_Spawner.ChildDied(healthRemaining);
         Destroy(gameObject);
     }
-    
+
 }

@@ -10,6 +10,7 @@ public class DefenseManager : MonoBehaviour
     public List<Defenses> myEmptyDefenses;
     public List<Defenses> myPlacedDefenses;
 
+    public GameObject emptyDefense;
     public GameObject presetDefense1;
 
     public UI uiManager;
@@ -41,9 +42,7 @@ public class DefenseManager : MonoBehaviour
             {
                 myPlacedDefenses.Add(def);
             }
-            
         }
-        
     }
 
     public void PlaceDefense(GameObject defenseSpot, Transform myTransform)
@@ -51,7 +50,16 @@ public class DefenseManager : MonoBehaviour
         if (uiManager.totalPurse > 0 && uiManager.totalPurse - presetDefense1.GetComponent<Defenses>().price >= 0 && defenseSpot.GetComponent<Defenses>().isEmpty)
         {
             uiManager.DecreasePurse(presetDefense1.GetComponent<Defenses>().price);
-            var instantiatedDefense = Instantiate(presetDefense1, myTransform.position, myTransform.rotation * Quaternion.Euler(-90f,0f,0f));
+            var instantiatedDefense = Instantiate(presetDefense1, myTransform.position, myTransform.rotation * Quaternion.Euler(0f,0f,0f));
+            instantiatedDefense.transform.parent = this.gameObject.transform;
+            Destroy(defenseSpot);
+            Collect();
+        }
+        else if (!defenseSpot.GetComponent<Defenses>().isEmpty)
+        {
+            Debug.Log("Removing Placed Defense and Refunding");
+            uiManager.IncreasePurse(presetDefense1.GetComponent<Defenses>().price);
+            var instantiatedDefense = Instantiate(emptyDefense, myTransform.position, myTransform.rotation * Quaternion.Euler(0f,0f,0f));
             instantiatedDefense.transform.parent = this.gameObject.transform;
             Destroy(defenseSpot);
             Collect();

@@ -6,10 +6,8 @@ using UnityEngine;
 
 public class UI : MonoBehaviour
 {
-    public TextMeshProUGUI scoreValue;
     public TextMeshProUGUI purseValue;
-
-    public int totalScore;
+    
     public int totalPurse;
 
     void Start()
@@ -17,11 +15,6 @@ public class UI : MonoBehaviour
         IncreasePurse(100);
     }
     
-    public void IncreaseScore(int amount)
-    {
-        
-    }
-
     public void IncreasePurse(int amount)
     {
         totalPurse += amount;
@@ -32,6 +25,16 @@ public class UI : MonoBehaviour
     {
         totalPurse -= amount;
         purseValue.SetText("$" + totalPurse);
+    }
+
+    void StartGame()
+    {
+        
+    }
+
+    void RestartGame()
+    {
+        
     }
 
 }

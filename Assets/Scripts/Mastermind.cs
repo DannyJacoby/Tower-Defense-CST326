@@ -1,18 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class GameController : MonoBehaviour
+public class Mastermind : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public bool AmIStart;
+    public TextMeshProUGUI startText;
+
+    public string leveltoload = "MainLevel";
+    
     void Start()
     {
-        
+        startText.SetText( (AmIStart) ? "Start The Game\nClick Space" : "Restart The Game\nClick Space" );
+        startText.color = (AmIStart) ? Color.green : Color.red;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Play();
+        }
     }
+    
+    public void Play()
+    {
+        SceneManager.LoadScene(leveltoload);
+    }
+    
 }
